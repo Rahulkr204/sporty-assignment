@@ -28,8 +28,9 @@
 import { ref, computed, onMounted } from 'vue';
 import { useLeagues, useLeagueBadge } from '../composables/useApiCache';
 import BadgeModal from './BadgeModal.vue';
+import type { League } from '../composables/useApiCache';
 
-const leagues = ref<any[]>([]);
+const leagues = ref<League[]>([]);
 const search = ref('');
 const selectedSport = ref('');
 const sports = ref<string[]>([]);
@@ -41,22 +42,23 @@ const { fetchLeagues } = useLeagues();
 const { fetchBadge } = useLeagueBadge();
 
 onMounted(async () => {
-    leagues.value = await fetchLeagues();
-    sports.value = Array.from(new Set(leagues.value.map(l => l.strSport))).sort();
+  leagues.value = await fetchLeagues();
+  // Extract unique sports
+  sports.value = Array.from(new Set(leagues.value.map(l => l.strSport))).sort();
 });
 
 const filteredLeagues = computed(() => {
-    return leagues.value.filter(l => {
-        const matchesSearch = l.strLeague.toLowerCase().includes(search.value.toLowerCase());
-        const matchesSport = !selectedSport.value || l.strSport === selectedSport.value;
-        return matchesSearch && matchesSport;
-    });
+  return leagues.value.filter(l => {
+    const matchesSearch = l.strLeague.toLowerCase().includes(search.value.toLowerCase());
+    const matchesSport = !selectedSport.value || l.strSport === selectedSport.value;
+    return matchesSearch && matchesSport;
+  });
 });
 
-async function onLeagueClick(league: any) {
-    selectedLeagueName.value = league.strLeague;
-    badgeUrl.value = null;
-    modalVisible.value = true;
-    badgeUrl.value = await fetchBadge(league.idLeague);
+async function onLeagueClick(league: League) {
+  selectedLeagueName.value = league.strLeague;
+  badgeUrl.value = null;
+  modalVisible.value = true;
+  badgeUrl.value = await fetchBadge(league.idLeague);
 }
 </script>

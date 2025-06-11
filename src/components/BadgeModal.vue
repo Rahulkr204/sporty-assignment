@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, watch } from 'vue';
+import { onBeforeUnmount, watch } from 'vue';
 
 const props = defineProps<{
   visible: boolean,
