@@ -9,6 +9,7 @@ export interface League {
 
 const BASE_URL = 'https://www.thesportsdb.com/api/v1/json/3';
 
+// We can use local storage to cache the leagues and badge data
 const leaguesCache = ref<League[] | null>(null);
 const badgeCache = ref<Record<string, string | null>>({});
 
