@@ -1,27 +1,76 @@
-Overview
-Build a single-page application (SPA) that consumes the All Leagues API and displays the sports leagues with filtering options.
--  Fetch and display a list of sports leagues.
--  Display Fields:
-    -  strLeague
-    -  strSport
-    -  strLeagueAlternate
--  Add a search bar to filter leagues by name.
--  Add a dropdown to filter by sport type (e.g., Soccer, Basketball, Motorsport).
--  Use component-based architecture.
--  The UI should be responsive and functional as a priority, visual enhancements can be added if time allows
--  Responses should be cached to avoid repeat calls
+# 🧭 Cursor Rules for Sporty Assignment
 
-The league entities respond to clicks and call the Season Badge API with the league ID to display a season badge image (can be for any season you like or the first entity in the response)
+These rules are intended to guide development in a consistent, scalable, and performant way for the single-page application that consumes the All Leagues API and displays the sports leagues with filtering options.
 
-Tools and libraries
-- Vue3
-- Tailwindcss
+---
 
-Things to keep in mind:
-- UI should be responsive
-- For large list displays we should optimize for rendering lists
-- For API, create a composable which can cache results as well
+## 📁 Folder Structure
 
-APIs:
+| Folder         | Purpose                                |
+|----------------|----------------------------------------|
+| `pages/`       | Page-level views                       |
+| `components/`  | Reusable UI components                 |
+| `composables/` | Reusable logic like `useLeagues.ts`    |
+| `assets/`      | Static assets like images or logos     |
+
+---
+
+## Component Conventions
+
+- Use `<script setup>` syntax in all Vue components.
+- Component names must be in **PascalCase**.
+- All `props` must be typed and validated.
+- Use `defineEmits` for event emission.
+- Avoid large components — break them into smaller parts if they exceed 100–150 lines.
+
+---
+
+## Tailwind CSS Guidelines
+
+- Follow [Tailwind class order](https://github.com/tailwindlabs/prettier-plugin-tailwindcss).
+- Avoid inline styles; prefer utility classes.
+- Use the standard spacing scale (`p-4`, `m-2`, `gap-6`, etc.).
+- Leverage responsive classes (`md:flex`, `lg:grid`, etc.) for layout.
+
+---
+
+## Performance Rules
+
+- **Use `:key` in all `v-for` loops**.
+- **Use composables to fetch and cache API responses.**
+  - Prefer `shallowRef` or `reactive` with custom caching logic.
+- Optimize rendering of long lists (use pagination or virtual scrolling if needed).
+
+---
+
+## Composables
+
+- File naming must begin with `use`, e.g., `useLeagues.ts`.
+- All API calls should be centralized inside composables.
+- Cache API responses to avoid unnecessary network requests.
+
+---
+
+## Responsive UI
+
+- The layout must work across mobile, tablet, and desktop.
+- Use Tailwind’s responsive utilities (`sm:`, `md:`, `lg:`, `xl:`).
+- Avoid fixed widths unless necessary.
+
+---
+
+## Developer Tips
+
+- Keep each component focused on a single responsibility.
+- Use `Suspense` with `<script setup>` for async composables.
+- Use `defineExpose` only when absolutely necessary.
+
+---
+
+### APIs:
 - All Leagues: https://www.thesportsdb.com/api/v1/json/3/all_leagues.php
 - Badge Lookup: https://www.thesportsdb.com/api/v1/json/3/search_all_seasons.php?badge=1&id=<id>
+
+---
+
+**Goal:** Clean, maintainable, performant SPA with consistent architecture and reusable logic.
